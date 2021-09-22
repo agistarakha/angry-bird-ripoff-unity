@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class GameController : MonoBehaviour
 
     private bool _isGameEnded = false;
     private Bird _shotBird;
+    private int _currentSceneIndex;
 
 
     // Start is called before the first frame update
@@ -31,6 +33,7 @@ public class GameController : MonoBehaviour
         }
 
         TapCollider.enabled = false;
+        _currentSceneIndex = 0;
         SlingShooter.InitiateBird(Birds[0]);
         _shotBird = Birds[0];
     }
@@ -43,14 +46,18 @@ public class GameController : MonoBehaviour
 
     public void ChangeBird()
     {
-        TapCollider.enabled = false;
-
         if (_isGameEnded)
         {
             return;
         }
+        TapCollider.enabled = false;
+
 
         Birds.RemoveAt(0);
+        if (Birds.Count <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
         if (Birds.Count > 0)
         {
@@ -72,7 +79,17 @@ public class GameController : MonoBehaviour
         if (Enemies.Count <= 0)
         {
             _isGameEnded = true;
+            _currentSceneIndex += 1;
+            if (_currentSceneIndex == 1)
+            {
+                SceneManager.LoadScene("Level 2");
+            }
+            else
+            {
+                SceneManager.LoadScene("Main");
+            }
         }
+
     }
 
     public void AssignTrail(Bird bird)

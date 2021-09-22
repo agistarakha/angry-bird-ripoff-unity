@@ -60,9 +60,10 @@ public class Bird : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col)
     {
         _state = BirdState.HitSomething;
+        PuffUp();
     }
 
-    private IEnumerator DestroyAfter(float second)
+    protected IEnumerator DestroyAfter(float second)
     {
         yield return new WaitForSeconds(second);
         Destroy(gameObject);
@@ -83,6 +84,11 @@ public class Bird : MonoBehaviour
     }
 
     public virtual void OnTap()
+    {
+        //Do nothing
+    }
+
+    public virtual void PuffUp()
     {
         //Do nothing
     }
